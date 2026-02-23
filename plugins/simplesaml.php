@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 2) . '/defaultplugin.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lists/admin/defaultplugin.php';
 require_once __DIR__ . '/simplesaml/simplesamlphp/lib/_autoload.php';
 
 use SimpleSAML\Auth\Simple;
