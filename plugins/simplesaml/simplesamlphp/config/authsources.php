@@ -1,6 +1,19 @@
 <?php
 
-$settings = include __DIR__ . '/../../settings.php';
+if (!class_exists('simplesaml')) {
+    if (file_exists(__DIR__ . '/../../../simplesaml.php')) {
+        include_once __DIR__ . '/../../../simplesaml.php';
+    }
+}
+
+if (class_exists('simplesaml')) {
+    $settings = [
+        'saml_entity_id' => simplesaml::getSetting('saml_entity_id'),
+        'saml_idp' => simplesaml::getSetting('saml_idp'),
+    ];
+} else {
+    $settings = [];
+}
 
 $config = [
     /*

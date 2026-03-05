@@ -1,6 +1,18 @@
 <?php
 
-$settings = include __DIR__ . '/../../settings.php';
+if (!class_exists('simplesaml')) {
+    if (file_exists(__DIR__ . '/../../../simplesaml.php')) {
+        include_once __DIR__ . '/../../../simplesaml.php';
+    }
+}
+
+if (class_exists('simplesaml')) {
+    $settings = [
+        'saml_idp' => simplesaml::getSetting('saml_idp'),
+    ];
+} else {
+    $settings = [];
+}
 $key = $settings['saml_idp'] ?? 'https://sso.phplist.com:8443/realms/phplist';
 
 /**

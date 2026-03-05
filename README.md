@@ -11,7 +11,6 @@ After `cd`-ing into the configured phpList plugin directory:
 ## Configuration
 
 ### You can configure saml from the phplist configuration page "SSO config" category (except for certificate which should be added manually in the cert folder)
-you will need to give write permission to the simplesaml/settings.php file
 
 https://resources.phplist.com/plugin/simplesaml#simplesamlphp_installation_check
 

@@ -5,7 +5,22 @@
  */
 
 $httpUtils = new \SimpleSAML\Utils\HTTP();
-$settings = include __DIR__ . '/../../settings.php';
+if (!class_exists('simplesaml')) {
+    if (file_exists(__DIR__ . '/../../../simplesaml.php')) {
+        include_once __DIR__ . '/../../../simplesaml.php';
+    }
+}
+
+if (class_exists('simplesaml')) {
+    $settings = [
+        'saml_secret_salt' => simplesaml::getSetting('saml_secret_salt'),
+        'saml_admin_password' => simplesaml::getSetting('saml_admin_password'),
+        'saml_trusted_url_domains' => simplesaml::getSetting('saml_trusted_url_domains'),
+        'saml_session_cookie_domain' => simplesaml::getSetting('saml_session_cookie_domain'),
+    ];
+} else {
+    $settings = [];
+}
 
 $config = [
 

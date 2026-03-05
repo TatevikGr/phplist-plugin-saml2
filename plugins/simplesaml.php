@@ -92,7 +92,18 @@ class simplesaml extends phplistPlugin
             'category' => self::CONFIG_CATEGORY,
         ],
     ];
-    private const SETTINGS_FILE_NAME= 'settings.php';
+    private static $instance = null;
+
+    public static function getSetting($key)
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        $setting = self::$instance->settings[$key] ?? null;
+
+        return !empty(getConfig($key)) ? getConfig($key) : ($setting['value'] ?? null);
+    }
+
     function __construct()
     {
         if ( version_compare(PHP_VERSION, '7.4.0') >= 0) {
@@ -100,15 +111,11 @@ class simplesaml extends phplistPlugin
         }
         parent::__construct();
         $this->tables = $GLOBALS['tables'];
-        $filename = __DIR__ . '/simplesaml/' . self::SETTINGS_FILE_NAME;
 
-        $dataToWrite = [];
         foreach ($this->settings as $key => $setting) {
-            $dataToWrite[$key] = !empty(getConfig($key)) ? getConfig($key) : $setting['value'];
+            $this->settings[$key]['value'] = !empty(getConfig($key)) ? getConfig($key) : $setting['value'];
         }
-        $this->settings[$this->name]['value'] = $dataToWrite[$this->name];
 
-        file_put_contents($filename, "<?php\n\nreturn " . var_export($dataToWrite, true) . ";\n");
         if ($this->settings['saml_secret_salt']['value'] == getConfig('saml_secret_salt')) {
             $GLOBALS['msg'] = ($GLOBALS['I18N']->get('Please change saml secret salt').'<br/>');
         }
